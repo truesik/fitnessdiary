@@ -1,3 +1,32 @@
-<p>
-  exercise-set-form works!
-</p>
+<form class="form-inline"
+      (ngSubmit)="addExerciseSet(newExerciseSetForm.value); newExerciseSetForm.reset()"
+      #newExerciseSetForm="ngForm">
+  <label class="sr-only" for="weight">Weight</label>
+  <input type="number"
+         class="form-control"
+         id="weight"
+         placeholder="Weight"
+         name="weight"
+         required
+         ngModel>
+  <label class="sr-only" for="reps">Reps</label>
+  <span>kgs</span>
+  <input type="number"
+         class="form-control"
+         id="reps"
+         placeholder="Reps"
+         name="reps"
+         required
+         ngModel>
+  <span>qt</span>
+  <label for="isWarmUp">
+    <input type="checkbox"
+           class="form-constrol"
+           id="isWarmUp"
+           placeholder="Warm Up"
+           name="isWarmUp"
+           ngModel>
+    Warm Up
+  </label>
+  <button type="submit" class="btn btn-outline-secondary" [disabled]="!newExerciseSetForm.valid">Add</button>
+</form>
