@@ -1,14 +1,11 @@
+import Exercise from './excercise.model';
+
 export default class Diary {
   id: number;
   title: string;
   startDate: Date;
-  private exercises: Array<Exercise>;
-
-  constructor(title,
-              startDate) {
-    this.title = title;
-    this.startDate = startDate;
-  }
+  description: string;
+  exercises: Array<Exercise> = [];
 
   public getExercises(): Array<Exercise> {
     return this.exercises;
