@@ -1,3 +1,10 @@
-<p>
-  diary-list works!
-</p>
+<div>
+  <div class="row">
+    <app-diary-form (addDiary)="addDiary($event)"></app-diary-form>
+  </div>
+</div>
+<div *ngIf="diaries.length > 0">
+  <div class="row" *ngFor="let diary of diaries">
+    <app-diary-item [diary]="diary" (removeDiary)="removeDiary($event)"></app-diary-item>
+  </div>
+</div>
