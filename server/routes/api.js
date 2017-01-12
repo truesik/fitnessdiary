@@ -5,13 +5,13 @@ var router = express.Router();
 
 /* DIARIES */
 router.get('/diaries', (req, res) => {
-  models.Diary.findAll()
+  models.diary.findAll()
     .then(diaries => res.json(diaries))
     .catch(error => res.send(error));
 });
 
 router.post('/diaries', (req, res) => {
-  models.Diary.create({
+  models.diary.create({
     title: req.body.title,
     startDate: req.body.startDate,
     description: req.body.description
@@ -20,8 +20,13 @@ router.post('/diaries', (req, res) => {
 });
 
 router.get('/diaries/:diaryId', (req, res) => {
-  models.Diary.findOne({
-    include: [models.Exercise],
+  models.diary.findOne({
+    include: [
+      {
+        all: true,
+        nested: true
+      }
+    ],
     where: {
       id: req.params.diaryId
     }
@@ -30,17 +35,17 @@ router.get('/diaries/:diaryId', (req, res) => {
 });
 
 router.delete('/diaries/:diaryId', (req, res) => {
-  models.Diary.destroy({
+  models.diary.destroy({
     where: {
       id: req.params.diaryId
     }
-  }).then(diary => res.json(diary))
+  }).then(() => res.send(req.params.diaryId))
     .catch(error => res.json(error))
 });
 
 /* EXERCISES */
 router.post('/exercises', (req, res) => {
-  models.Exercise.findAll({
+  models.exercise.findAll({
     where: {
       diary_id: req.body.id
     }
@@ -48,18 +53,19 @@ router.post('/exercises', (req, res) => {
     .catch(error => res.json(error))
 });
 
-router.post('/exercises', (req, res) => {
-  models.Exercise.create({
+router.post('/exercises/add', (req, res) => {
+  models.exercise.create({
     title: req.body.title,
     muscleGroup: req.body.muscleGroup,
     date: req.body.date,
-    diary_id: req.body.diary_id
-  })
+    diaryId: req.body.diaryId
+  }).then(exercise => res.status(201).json(exercise))
+    .catch(error => res.json(error))
 });
 
 router.get('/exercises/:exerciseId', (req, res) => {
-  models.Exercise.findOne({
-    include: [models.ExerciseSet],
+  models.exercise.findOne({
+    include: [models.exerciseSet],
     where: {
       id: req.params.exerciseId
     }
@@ -68,11 +74,49 @@ router.get('/exercises/:exerciseId', (req, res) => {
 });
 
 router.delete('/execises/:exerciseId', (req, res) => {
-  models.Exercise.destroy({
+  models.exercise.destroy({
     where: {
       id: req.params.exerciseId
     }
-  }).then(exercise => res.json(exercise))
+  }).then(() => res.text(req.params.exerciseId))
+    .catch(error => res.json(error))
+});
+
+/* SETS */
+router.post('/sets/', (req, res) => {
+  models.exerciseSet.findAll({
+    where: {
+      exercise_id: req.body.id
+    }
+  }).then(sets => res.json(sets))
+    .catch(error => res.json(error))
+});
+
+router.post('/sets/add', (req, res) => {
+  models.exerciseSet.create({
+    weight: req.body.weight,
+    reps: req.body.reps,
+    warmUp: req.body.warmUp,
+    exerciseId: req.body.exerciseId
+  }).then(set => res.json(set))
+    .catch(error => res.json(error))
+});
+
+router.get('/sets/:setId', (req, res) => {
+  models.exerciseSet.findOne({
+    where: {
+      id: req.params.setId
+    }
+  }).then(set => res.json(set))
+    .catch(error => res.json(error))
+});
+
+router.delete('/sets/:setId', (req, res) => {
+  models.exerciseSet.destroy({
+    where: {
+      id: req.params.setId
+    }
+  }).then(() => res.text(req.params.setId))
     .catch(error => res.json(error))
 });
 
