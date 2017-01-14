@@ -5,7 +5,7 @@ import ExerciseSet from './exercise-set.model';
 
 @Injectable()
 export class ExerciseSetService {
-  private SETS_URL = '/sets/';
+  private SETS_URL = '/api/sets/';
 
   constructor(private http: Http) {
   }
@@ -15,6 +15,7 @@ export class ExerciseSetService {
     let options = new RequestOptions({headers: headers});
     return this.http.post(this.SETS_URL, {id: exerciseId}, options)
       .map((response: Response) => response.json())
+      .map(jsonArray => jsonArray.map(exerciseSetJson => new ExerciseSet(exerciseSetJson)))
       .catch((error: Response) => Observable.throw(error.json()));
   }
 
@@ -28,7 +29,7 @@ export class ExerciseSetService {
   addSet(set: ExerciseSet): Observable<ExerciseSet> {
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
-    return this.http.post(this.SETS_URL, set, options)
+    return this.http.post(`${this.SETS_URL}/add`, set, options)
       .map((response: Response) => response.json())
       .map(json => new ExerciseSet(json))
       .catch((error: Response) => Observable.throw(error.json()));
@@ -36,7 +37,7 @@ export class ExerciseSetService {
 
   removwSet(set: ExerciseSet): Observable<number> {
     return this.http.delete(`${this.SETS_URL}/${set.id}`)
-      .map((respose: Response) => respose.text())
+      .map((response: Response) => Number.parseInt(response.text()))
       .catch((error: Response) => Observable.throw(error.json()));
   }
 }

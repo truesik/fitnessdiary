@@ -1,5 +1,5 @@
 <form class="form-inline"
-      (ngSubmit)="addExerciseSet(newExerciseSetForm.value); newExerciseSetForm.reset()"
+      (ngSubmit)="add(newExerciseSetForm.value); newExerciseSetForm.reset()"
       #newExerciseSetForm="ngForm">
   <label class="sr-only" for="weight">Weight</label>
   <input type="number"
@@ -19,12 +19,12 @@
          required
          ngModel>
   <span>qt</span>
-  <label for="isWarmUp">
+  <label for="warmUp">
     <input type="checkbox"
-           class="form-constrol"
-           id="isWarmUp"
+           class="form-control"
+           id="warmUp"
            placeholder="Warm Up"
-           name="isWarmUp"
+           name="warmUp"
            ngModel>
     Warm Up
   </label>

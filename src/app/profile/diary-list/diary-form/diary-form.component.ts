@@ -12,7 +12,6 @@ export class DiaryFormComponent {
   add(title: string): void {
     let newDiary = new Diary();
     newDiary.title = title;
-    newDiary.startDate = new Date();
     newDiary.description = 'some description';
     this.addDiary.emit(newDiary);
   }

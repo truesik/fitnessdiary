@@ -1,26 +1,19 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-light bg-faded">
   <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button"
-              class="navbar-toggle collapsed"
-              data-toggle="collapse"
-              data-target="#bs-example-navbar-collapse-1"
-              aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Fitness Diary</a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <li><button type="button" class="btn btn-default navbar-btn">Sign up</button></li>
-        <li><button type="button" class="btn btn-default navbar-btn">Sign in</button></li>
+    <button class="navbar-toggler hidden-lg-up"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarResponsive"
+            aria-controls="navbarResponsive"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+    </button>
+    <div class="collapse navbar-toggleable-md" id="navbarResponsive">
+      <a class="navbar-brand mb-0" routerLink="/">Fitness Diary</a>
+      <ul class="nav navbar-nav float-lg-right">
+        <li class="nav-item"><a class="btn btn-outline-secondary">Sign up</a></li>
+        <li class="nav-item"><a class="btn btn-outline-secondary">Sign in</a></li>
       </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+    </div>
+  </div>
 </nav>

@@ -7,27 +7,22 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class DiaryService {
   private DIARIES_URL = '/api/diaries';
-  private http: Http;
 
-  constructor(http: Http) {
-    this.http = http;
+  constructor(private http: Http) {
   }
 
-  getAllDiaries(): Observable<Array<Diary>> {
-    return this.http
-      .get(this.DIARIES_URL)
+  getAllDiaries(): Observable<Diary[]> {
+    return this.http.get(this.DIARIES_URL)
       .map((response: Response) => response.json())
-      .catch((error: Response) => {
-        throw Observable.throw(error);
-      });
+      .map(json => json.map(diary => new Diary(diary)))
+      .catch((error: Response) => Observable.throw(error.json()));
   }
 
   getDiaryById(id: number): Observable<Diary> {
     return this.http.get(`${this.DIARIES_URL}/${id}`)
       .map((response: Response) => response.json())
-      .catch((error: Response) => {
-        throw Observable.throw(error);
-      });
+      .map(json => new Diary(json))
+      .catch((error: Response) => Observable.throw(error.json()));
   }
 
   addDiary(diary: Diary): Observable<Diary> {
@@ -35,18 +30,13 @@ export class DiaryService {
     let options = new RequestOptions({headers: headers});
     return this.http.post(this.DIARIES_URL, diary, options)
       .map((response: Response) => response.json())
-      .catch((error: Response | any) => {
-        throw Observable.throw(error);
-      });
+      .map(json => new Diary(json))
+      .catch((error: Response) => Observable.throw(error.json()));
   }
 
   removeDiary(diary: Diary): Observable<number> {
     return this.http.delete(`${this.DIARIES_URL}/${diary.id}`)
-      .map((response: Response) => {
-        response.text();
-      })
-      .catch((error: Response) => {
-        throw Observable.throw(error);
-      });
+      .map((response: Response) => Number.parseInt(response.text()))
+      .catch((error: Response) => Observable.throw(error.json()));
   }
 }

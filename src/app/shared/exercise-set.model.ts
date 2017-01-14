@@ -3,8 +3,11 @@ export default class ExerciseSet {
   weight: number;
   reps: number;
   warmUp: boolean = false;
+  exerciseId: number;
 
-  constructor(object) {
-    Object.assign(this, object);
+  constructor(json?) {
+    if (json) {
+      Object.assign(this, json);
+    }
   }
 }

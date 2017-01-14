@@ -1,0 +1,12 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-block">
+      <h4 class="card-title">{{exercise.title}}</h4>
+      <h6 class="card-subtitle text-muted">{{exercise.createdAt.toLocaleDateString()}}</h6>
+    </div>
+    <app-exercise-set-list [exercise]="exercise"></app-exercise-set-list>
+    <div class="card-block">
+      <a class="btn btn-outline-danger float-md-right" role="button" (click)="remove($event)">Remove</a>
+    </div>
+  </div>
+</div>

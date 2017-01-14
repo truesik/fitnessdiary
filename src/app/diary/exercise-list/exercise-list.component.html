@@ -1,3 +1,7 @@
-<p>
-  exercise-list works!
-</p>
+<div>
+  <app-exercise-form [diary]="diary" (addExercise)="addExercise($event)"></app-exercise-form>
+</div>
+<h3>Exercises {{exercises.length}}</h3>
+<div class="row" *ngFor="let exercise of exercises">
+  <app-exercise-item [exercise]="exercise" (removeExercise)="removeExercise($event)"></app-exercise-item>
+</div>

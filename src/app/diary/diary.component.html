@@ -1,3 +1,10 @@
-<p>
-  diary works!
-</p>
+<div class="container" *ngIf="diary">
+  <p>{{diary.title}}</p>
+  <p>{{diary.createdAt.toLocaleDateString()}}</p>
+  <p>{{diary.description}}</p>
+  <p>{{diary.getCurrentWeek()}}</p>
+
+  <div>
+    <app-exercise-list [diary]="diary" [exercises]="diary.exercises"></app-exercise-list>
+  </div>
+</div>

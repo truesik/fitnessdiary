@@ -1,0 +1,8 @@
+<div class="card-block">
+  <app-exercise-set-form [exercise]="exercise" (addSet)="addExerciseSet($event)"></app-exercise-set-form>
+</div>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item list-group-item-action" *ngFor="let set of exercise.exerciseSets">
+    <app-exercise-set-item [exerciseSet]="set" (removeSet)="removeExerciseSet($event)"></app-exercise-set-item>
+  </li>
+</ul>

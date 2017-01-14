@@ -1,0 +1,11 @@
+<span>{{exerciseSet.weight}} kgs</span>
+<span>{{exerciseSet.reps}} qt.</span>
+<span *ngIf="exerciseSet.warmUp">Warm up</span>
+<div class="float-md-right">
+  <a class="btn btn-secondary btn-sm">Change</a>
+  <a class="btn btn-danger btn-sm"
+     role="button"
+     (click)="remove($event)">
+    Remove
+  </a>
+</div>
