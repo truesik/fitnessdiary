@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function (sequelize, DataTypes) {
-  var ExerciseSet = sequelize.define('ExerciseSet', {
+  var ExerciseSet = sequelize.define('exerciseSet', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -20,15 +20,20 @@ module.exports = function (sequelize, DataTypes) {
       field: 'warm_up',
       allowNull: false,
       defaultValue: false,
+    },
+    exerciseId: {
+      type: DataTypes.INTEGER,
+      field: 'exercise_id',
+      allowNull: false
     }
   }, {
     tableName: 'exercise_sets',
     underscored: true,
-    timestamps: false,
+    timestamps: true,
     classMethods: {
       associate: function (models) {
         // associations can be defined here
-        ExerciseSet.belongsTo(models.Exercise)
+        ExerciseSet.belongsTo(models.exercise)
       }
     }
   });

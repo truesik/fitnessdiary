@@ -13,12 +13,16 @@ module.exports = {
         unique: true,
         allowNull: false
       },
-      start_date: {
-        type: Sequelize.DATEONLY,
-        allowNull: false
-      },
       description: {
         type: Sequelize.TEXT
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
   },

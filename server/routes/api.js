@@ -13,7 +13,6 @@ router.get('/diaries', (req, res) => {
 router.post('/diaries', (req, res) => {
   models.diary.create({
     title: req.body.title,
-    startDate: req.body.startDate,
     description: req.body.description
   }).then(diary => res.status(201).json(diary))
     .catch(error => res.json(error));
@@ -57,7 +56,6 @@ router.post('/exercises/add', (req, res) => {
   models.exercise.create({
     title: req.body.title,
     muscleGroup: req.body.muscleGroup,
-    date: req.body.date,
     diaryId: req.body.diaryId
   }).then(exercise => res.status(201).json(exercise))
     .catch(error => res.json(error))
@@ -73,7 +71,7 @@ router.get('/exercises/:exerciseId', (req, res) => {
     .catch(error => res.json(error))
 });
 
-router.delete('/execises/:exerciseId', (req, res) => {
+router.delete('/exercises/:exerciseId', (req, res) => {
   models.exercise.destroy({
     where: {
       id: req.params.exerciseId

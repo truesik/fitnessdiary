@@ -15,10 +15,6 @@ module.exports = {
       muscle_group: {
         type: Sequelize.STRING
       },
-      date: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
       diary_id: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
@@ -27,6 +23,14 @@ module.exports = {
           model: 'diaries',
           key: 'id'
         }
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
   },

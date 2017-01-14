@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var Exercise = sequelize.define('Exercise', {
+  var Exercise = sequelize.define('exercise', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -18,22 +18,20 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       field: 'muscle_group'
     },
-    date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate: {
-        isDate: true
-      }
+    diaryId: {
+      type: DataTypes.INTEGER,
+      field: 'diary_id',
+      allowNull: false
     }
   }, {
     tableName: 'exercises',
     underscored: true,
-    timestamps: false,
+    timestamps: true,
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        Exercise.belongsTo(models.Diary);
-        Exercise.hasMany(models.ExerciseSet);
+        Exercise.belongsTo(models.diary);
+        Exercise.hasMany(models.exerciseSet);
       }
     }
   });
