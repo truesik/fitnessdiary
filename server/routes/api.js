@@ -118,4 +118,51 @@ router.delete('/sets/:setId', (req, res) => {
     .catch(error => res.json(error))
 });
 
+/* USERS */
+
+router.get('/users/', (req, res) => {
+  models.user.findAll()
+    .then(users => res.json(users))
+    .catch(error => res.json(error))
+});
+
+router.post('/users/:userId', (req, res) => {
+  models.user.findOne({
+    include: [{
+      all: true,
+      nested: true
+    }],
+    where: {
+      id: req.params.userId
+    }
+  }).then(user => res.json(user))
+    .catch(error => res.json(error))
+});
+
+router.post('/users/', (req, res) => {
+  models.user.create({
+    username: req.body.username,
+    password: req.body.password,
+    email: req.body.email
+  }).then(user => res.status(201).json(user))
+    .catch(error => res.json(error))
+});
+
+router.delete('/users/:userId', (req, res) => {
+  models.user.destroy({
+    where: {
+      id: req.params.userId
+    }
+  }).then(() => res.text(req.params.userId))
+    .catch(error => res.json(error))
+});
+
+router.post('/users/login', (req, res) => {
+
+});
+
+router.post('/users/logout', (req, res) => {
+
+});
+
 module.exports = router;
