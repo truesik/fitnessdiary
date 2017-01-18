@@ -5,7 +5,7 @@ import ExerciseSet from './exercise-set.model';
 
 @Injectable()
 export class ExerciseSetService {
-  private SETS_URL = '/api/sets/';
+  private SETS_URL = '/api/sets';
 
   constructor(private http: Http) {
   }
@@ -35,7 +35,7 @@ export class ExerciseSetService {
       .catch((error: Response) => Observable.throw(error.json()));
   }
 
-  removwSet(set: ExerciseSet): Observable<number> {
+  removeSet(set: ExerciseSet): Observable<number> {
     return this.http.delete(`${this.SETS_URL}/${set.id}`)
       .map((response: Response) => Number.parseInt(response.text()))
       .catch((error: Response) => Observable.throw(error.json()));
