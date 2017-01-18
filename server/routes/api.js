@@ -1,7 +1,7 @@
 var express = require('express');
 var models = require('../models');
-
 var router = express.Router();
+const passport = require('passport');
 
 /* DIARIES */
 router.get('/diaries', (req, res) => {
@@ -144,7 +144,7 @@ router.post('/users/', (req, res) => {
     username: req.body.username,
     password: req.body.password,
     email: req.body.email
-  }).then(user => res.status(201).json(user))
+  }).then(user => res.status(201).header('location', '/profile').json(user))
     .catch(error => res.json(error))
 });
 
@@ -157,12 +157,28 @@ router.delete('/users/:userId', (req, res) => {
     .catch(error => res.json(error))
 });
 
-router.post('/users/login', (req, res) => {
+/* AUTHENTICATION */
 
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.json({error: 'user not found'});
+    }
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.json(user);
+    });
+  })(req, res, next);
 });
 
-router.post('/users/logout', (req, res) => {
-
+router.post('/logout', (req, res) => {
+  req.logout();
+  res.status(200);
 });
 
 module.exports = router;
