@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import User from './user.model';
 import { Observable } from 'rxjs';
+
+import User from './user.model';
 
 @Injectable()
 export class UserService {
@@ -29,6 +30,7 @@ export class UserService {
     let options = new RequestOptions({headers: headers});
     return this.http.post(this.USERS_URL, user, options)
       .map((response: Response) => response.json())
+      .map(json => new User(json))
       .catch((error: Response) => Observable.throw(error.json()));
   }
 
