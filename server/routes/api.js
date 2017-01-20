@@ -1,24 +1,29 @@
-var express = require('express');
-var models = require('../models');
-var router = express.Router();
+const express = require('express');
+const models = require('../models');
+const router = express.Router();
 const passport = require('passport');
 
 /* DIARIES */
-router.get('/diaries', (req, res) => {
-  models.diary.findAll()
+router.get('/diaries', ensureAuthenticated, (req, res) => {
+  models.diary.findAll({
+    where: {
+      user_id: req.user.id
+    }
+  })
     .then(diaries => res.json(diaries))
     .catch(error => res.send(error));
 });
 
-router.post('/diaries', (req, res) => {
+router.post('/diaries', ensureAuthenticated, (req, res) => {
   models.diary.create({
     title: req.body.title,
-    description: req.body.description
+    description: req.body.description,
+    user_id: req.user.id
   }).then(diary => res.status(201).json(diary))
     .catch(error => res.json(error));
 });
 
-router.get('/diaries/:diaryId', (req, res) => {
+router.get('/diaries/:diaryId', ensureAuthenticated, (req, res) => {
   models.diary.findOne({
     include: [
       {
@@ -27,13 +32,14 @@ router.get('/diaries/:diaryId', (req, res) => {
       }
     ],
     where: {
-      id: req.params.diaryId
+      id: req.params.diaryId,
+      user_id: req.user.id
     }
   }).then(diary => res.json(diary))
     .catch(error => res.json(error));
 });
 
-router.delete('/diaries/:diaryId', (req, res) => {
+router.delete('/diaries/:diaryId', ensureAuthenticated, (req, res) => {
   models.diary.destroy({
     where: {
       id: req.params.diaryId
@@ -43,7 +49,7 @@ router.delete('/diaries/:diaryId', (req, res) => {
 });
 
 /* EXERCISES */
-router.post('/exercises', (req, res) => {
+router.post('/exercises', ensureAuthenticated, (req, res) => {
   models.exercise.findAll({
     where: {
       diary_id: req.body.id
@@ -52,7 +58,7 @@ router.post('/exercises', (req, res) => {
     .catch(error => res.json(error))
 });
 
-router.post('/exercises/add', (req, res) => {
+router.post('/exercises/add', ensureAuthenticated, (req, res) => {
   models.exercise.create({
     title: req.body.title,
     muscleGroup: req.body.muscleGroup,
@@ -61,7 +67,7 @@ router.post('/exercises/add', (req, res) => {
     .catch(error => res.json(error))
 });
 
-router.get('/exercises/:exerciseId', (req, res) => {
+router.get('/exercises/:exerciseId', ensureAuthenticated, (req, res) => {
   models.exercise.findOne({
     include: [models.exerciseSet],
     where: {
@@ -71,7 +77,7 @@ router.get('/exercises/:exerciseId', (req, res) => {
     .catch(error => res.json(error))
 });
 
-router.delete('/exercises/:exerciseId', (req, res) => {
+router.delete('/exercises/:exerciseId', ensureAuthenticated, (req, res) => {
   models.exercise.destroy({
     where: {
       id: req.params.exerciseId
@@ -81,7 +87,7 @@ router.delete('/exercises/:exerciseId', (req, res) => {
 });
 
 /* SETS */
-router.post('/sets/', (req, res) => {
+router.post('/sets/', ensureAuthenticated, (req, res) => {
   models.exerciseSet.findAll({
     where: {
       exercise_id: req.body.id
@@ -90,7 +96,7 @@ router.post('/sets/', (req, res) => {
     .catch(error => res.json(error))
 });
 
-router.post('/sets/add', (req, res) => {
+router.post('/sets/add', ensureAuthenticated, (req, res) => {
   models.exerciseSet.create({
     weight: req.body.weight,
     reps: req.body.reps,
@@ -100,7 +106,7 @@ router.post('/sets/add', (req, res) => {
     .catch(error => res.json(error))
 });
 
-router.get('/sets/:setId', (req, res) => {
+router.get('/sets/:setId', ensureAuthenticated, (req, res) => {
   models.exerciseSet.findOne({
     where: {
       id: req.params.setId
@@ -109,7 +115,7 @@ router.get('/sets/:setId', (req, res) => {
     .catch(error => res.json(error))
 });
 
-router.delete('/sets/:setId', (req, res) => {
+router.delete('/sets/:setId', ensureAuthenticated, (req, res) => {
   models.exerciseSet.destroy({
     where: {
       id: req.params.setId
@@ -119,14 +125,13 @@ router.delete('/sets/:setId', (req, res) => {
 });
 
 /* USERS */
-
 router.get('/users/', (req, res) => {
   models.user.findAll()
     .then(users => res.json(users))
     .catch(error => res.json(error))
 });
 
-router.post('/users/:userId', (req, res) => {
+router.get('/users/:userId', (req, res) => {
   models.user.findOne({
     include: [{
       all: true,
@@ -144,11 +149,11 @@ router.post('/users/', (req, res) => {
     username: req.body.username,
     password: req.body.password,
     email: req.body.email
-  }).then(user => res.status(201).header('location', '/profile').json(user))
+  }).then(user => res.status(201).json(user))
     .catch(error => res.json(error))
 });
 
-router.delete('/users/:userId', (req, res) => {
+router.delete('/users/:userId', ensureAuthenticated, (req, res) => {
   models.user.destroy({
     where: {
       id: req.params.userId
@@ -158,9 +163,8 @@ router.delete('/users/:userId', (req, res) => {
 });
 
 /* AUTHENTICATION */
-
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('login', (err, user, info) => {
     if (err) {
       return next(err);
     }
@@ -177,8 +181,22 @@ router.post('/login', (req, res, next) => {
 });
 
 router.post('/logout', (req, res) => {
-  req.logout();
-  res.status(200);
+  req.logOut();
+  res.status(200).json({success: true});
 });
+
+router.get('/loggedIn', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.json({isLoggedIn: true});
+  }
+  return res.json({isLoggedIn: false});
+});
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401);
+}
 
 module.exports = router;
