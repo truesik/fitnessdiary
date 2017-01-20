@@ -10,11 +10,19 @@ module.exports = {
       },
       title: {
         type: Sequelize.STRING,
-        unique: true,
         allowNull: false
       },
       description: {
         type: Sequelize.TEXT
+      },
+      user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'users',
+          key: 'id'
+        }
       },
       created_at: {
         allowNull: false,
