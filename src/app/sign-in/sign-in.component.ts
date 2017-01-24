@@ -10,15 +10,15 @@ import User from '../shared/user.model';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent {
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService,
+              private router: Router) {
   }
 
   login(form) {
     this.authService.login(form).subscribe(
       (user: User) => {
         this.router.navigate(['/profile']);
-      },
-      error => console.log(error)
+      }
     );
   }
 }

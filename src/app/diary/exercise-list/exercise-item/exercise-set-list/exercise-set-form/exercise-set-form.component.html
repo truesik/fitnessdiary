@@ -3,6 +3,8 @@
       #newExerciseSetForm="ngForm">
   <label class="sr-only" for="weight">Weight</label>
   <input type="number"
+         min="0"
+         step="any"
          class="form-control"
          id="weight"
          placeholder="Weight"
@@ -12,6 +14,9 @@
   <label class="sr-only" for="reps">Reps</label>
   <span>kgs</span>
   <input type="number"
+         min="1"
+         step="1"
+         pattern="\d+"
          class="form-control"
          id="reps"
          placeholder="Reps"

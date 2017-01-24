@@ -6,9 +6,14 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@angular/material';
 
 import { ROUTES } from './app-routing.module';
+
 import { DiaryService } from './shared/diary.service';
 import { ExerciseService } from './shared/exercise.service';
 import { ExerciseSetService } from './shared/exercise-set.service';
+import { UserService } from './shared/user.service';
+import { AuthService } from './shared/auth.service';
+import { AuthGuardService } from './shared/auth-guard.service';
+
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
@@ -23,6 +28,8 @@ import { ExerciseItemComponent } from './diary/exercise-list/exercise-item/exerc
 import { ExerciseSetListComponent } from './diary/exercise-list/exercise-item/exercise-set-list/exercise-set-list.component';
 import { ExerciseSetFormComponent } from './diary/exercise-list/exercise-item/exercise-set-list/exercise-set-form/exercise-set-form.component';
 import { ExerciseSetItemComponent } from './diary/exercise-list/exercise-item/exercise-set-list/exercise-set-item/exercise-set-item.component';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +46,9 @@ import { ExerciseSetItemComponent } from './diary/exercise-list/exercise-item/ex
     ExerciseSetItemComponent,
     DiaryItemComponent,
     ExerciseListComponent,
-    ExerciseSetListComponent
+    ExerciseSetListComponent,
+    SignInComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +60,10 @@ import { ExerciseSetItemComponent } from './diary/exercise-list/exercise-item/ex
   providers: [
     DiaryService,
     ExerciseService,
-    ExerciseSetService
+    ExerciseSetService,
+    UserService,
+    AuthService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })

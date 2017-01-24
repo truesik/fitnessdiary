@@ -10,9 +10,13 @@
     </button>
     <div class="collapse navbar-toggleable-md" id="navbarResponsive">
       <a class="navbar-brand mb-0" routerLink="/">Fitness Diary</a>
-      <ul class="nav navbar-nav float-lg-right">
-        <li class="nav-item"><a class="btn btn-outline-secondary">Sign up</a></li>
-        <li class="nav-item"><a class="btn btn-outline-secondary">Sign in</a></li>
+      <ul class="nav navbar-nav float-lg-right" *ngIf="!authService.isLoggedIn()">
+        <li class="nav-item"><a class="btn btn-outline-secondary" routerLink="/register">Sign up</a></li>
+        <li class="nav-item"><a class="btn btn-outline-secondary" routerLink="/login">Sign in</a></li>
+      </ul>
+      <ul class="nav navbar-nav float-lg-right" *ngIf="authService.isLoggedIn()">
+        <li class="nav-item"><a class="btn btn-outline-secondary" routerLink="/profile">Profile</a></li>
+        <li class="nav-item"><a class="btn btn-outline-secondary" (click)="logout($event)">Logout</a></li>
       </ul>
     </div>
   </div>

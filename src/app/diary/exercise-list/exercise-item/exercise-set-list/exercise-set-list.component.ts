@@ -15,7 +15,6 @@ export class ExerciseSetListComponent {
   }
 
   addExerciseSet(exerciseSet: ExerciseSet) {
-    console.log(exerciseSet);
     this.exerciseSetService
       .addSet(exerciseSet)
       .subscribe(
@@ -25,7 +24,7 @@ export class ExerciseSetListComponent {
 
   removeExerciseSet(exerciseSet: ExerciseSet) {
     this.exerciseSetService
-      .removwSet(exerciseSet)
+      .removeSet(exerciseSet)
       .subscribe(
         () => {
           const index = this.exercise.exerciseSets.indexOf(exerciseSet);

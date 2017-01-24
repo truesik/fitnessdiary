@@ -12,7 +12,6 @@ export class SignUpComponent {
   }
 
   register(form): void {
-    console.log(form);
-    this.userService.addUser(new User(form));
+    this.userService.addUser(new User(form)).subscribe();
   }
 }
