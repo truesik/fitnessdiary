@@ -3,25 +3,34 @@ module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('user', {
     username: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true,
+      validate: {
+        min: 3
+      }
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        min: 8
+      }
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true,
     }
   }, {
+    tableName: 'users',
+    underscored: true,
+    timestamps: true,
     classMethods: {
-      tableName: 'users',
-      underscored: true,
-      timestamps: true,
       associate: function(models) {
         // associations can be defined here
+        User.hasMany(models.diary);
       }
     }
   });
-  return user;
+  return User;
 };
